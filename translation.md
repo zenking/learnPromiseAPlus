@@ -49,7 +49,7 @@
  
  7.1. 如果 `onResolved` 或 `onRejected` 返回一个值 `x`，对 `nextPromise` 和 `x` 进行这个操作 ： `[[Resolve]](nextPromise， x)`，具体操作过程查看下面；
  
- 7.2. 如果onResolved或onRejected抛出一个 `exception`， `nextPromise` 会将这个异常作为 `reason` 转化为 `resolved`；
+ 7.2. 如果onResolved或onRejected抛出一个 `exception`， `nextPromise` 会将这个异常作为 `reason` 转化为 `rejected`；
  
  7.3. 如果 `onResolved` 不是函数，并且 `promise` 状态为 `resolved`，nextPromise 将以相同的 `value` 被Resolved，
  
