@@ -66,11 +66,11 @@
 
 - 如果 `x` 是一个对象：_2.3.3_
 
-	- 将 `x.then` 赋值给 `nextPromise.then`  _2.3.3.1_
+	- 将 `x.then` 赋值给新的变量 `then`  _2.3.3.1_
 
 	- 如果取 `x.then` 的值时抛出错误 `e`，将 `e` 作为 `reason` 将 `nextPromise` 转化为  `rejected`；_2.3.3.2_
 
-	- 如果 `x.then` 是函数 ，则将 `x` 作为上下文(`this`)执行这个函数，传入两个函数作为参数，第一个为 `resolvePromise`，第二个为 `rejectPromise`。 _2.3.3.3_
+	- 如果 `x.then` 是函数 ，则将 `x` 作为上下文(`this`)执行这个 `then` 函数，传入两个函数作为参数，第一个为 `resolvePromise`，第二个为 `rejectPromise`。 _2.3.3.3_
 
 		- 如果执行 `resolvePromise(y)`，则执行过程 `[[Resolve]](nextPromise,y)`；_2.3.3.3.1_
  
