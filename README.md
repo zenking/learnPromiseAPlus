@@ -105,10 +105,10 @@ promsieA+极大的增强了代码的可读性，减少了后期代码的维护�
 
 ## 实现
 
-之前查到的其它的实现[guilipan/swift-promise](https://github.com/guilipan/swift-promise)还有[chemdemo/promiseA](https://github.com/chemdemo/promiseA)，我在写的时候参考了一些，但是还是看了好久，因为这俩基本都是实现好的，代码也做过优化，看的有些吃力啊。于是就自己按照规范实现了一下，好像参考了后面那个比较多啊。但是后面那个没有通过下面这个测试
+之前查到的其它的实现[guilipan/swift-promise](https://github.com/guilipan/swift-promise)还有[chemdemo/promiseA](https://github.com/chemdemo/promiseA)，我在写的时候参考了一些，但是还是看了好久，因为这俩基本都是实现好的，代码也做过优化，看的有些吃力啊。于是就自己按照规范实现了一下，好像参考了后面那个比较多啊。虽然写的时候开始时参考后面那个比较多  但是越写越改越来越像后面那个了。貌似这两个都没有通过最新的测试。
 
 这个有个PromiseA+的测试[promises-aplus/promises-tests](https://github.com/promises-aplus/promises-tests)
 
-本repo的实现本来是想通过测试的，结果根本通不过，发现从出发点的就没有设计好，结果没通过测试，如果要改的话得重写，就这样好了，虽然没有通过，但是基本上和规范差不多。。。。
+后来测试的时候发现有一点不管怎么都通不过 对比文档感觉测试用例不太对 就不管了  
 
-2.2.6、2.2.7、2.3.3、2.3.4这四个是没有通过的，其它都通过了的。
+2.3.3.3.1 说y是thenable  但是后来又让y是promise  导致走的都是promise线  如果走thenable线的话就对了 反正就是类似的一大片测试用例没通过  
