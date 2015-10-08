@@ -1,3 +1,8 @@
+/*
+ *	封装根据测试为代码打补丁，未通过 2.2.6、2.2.7、2.3.3、2.3.4
+ *
+ */
+
 ;(function (root, factory) {
     if (typeof module !== 'undefined' && module.exports) {// CommonJS
         module.exports = factory();
@@ -45,7 +50,7 @@
 			if(isFn(onReject)) self._rejects.push(onReject);
 		}else if(self._status){    // 如果当前的Promise已经处于resolved状态,比如先进行resolve操作,再进行then操作
 			if(isFn(onResolve)) {
-				setTimeout(function () {	//test 2.2.4   2.2.6.1
+				setTimeout(function () {	//test 2.2.4  
 					try{
 			        	var x = onResolve(self._value);	// 直接调用onResolve,并获取返回值
 			        	resolveX(self._next,x);	// 如果有返回值，进行这个操作[[Resolve]](nextPromise,x)为了方便理解,将规范中的promsie2改成了nextPromsie
@@ -59,7 +64,7 @@
 	        }
 		}else if(!self._status){  // 同上一个 if
 			if(isFn(onReject)) {
-				setTimeout(function () { //test 2.2.4执行队列     catch err 2.2.6.1
+				setTimeout(function () { //test 2.2.4执行队列     
 					try{
 						var x = onReject(self._reason);
 		        		resolveX(self._next,x);
@@ -87,7 +92,7 @@
 		//加入队列  测试 2.2.2.2
 		setTimeout(function () {
 			while(self._resolves.length){	// 以value作为参数执行队列中的函数
-				try{	// test 2.2.6.1
+				try{	
 					var x = self._resolves.shift()(self._value);
 					resolveX(self._next,x);	// 如果有返回值进行这个操作[[Resolve]](nextPromise,x)
 				}catch(e){
@@ -143,27 +148,25 @@
 				// 如果x是 `rejected`， `nextPromise` 将以相同的 `reason` 转化为 `rejected`
 				nextPromise.reject(x._reason);
 			}
-		}else if(typeof x == "object" ){
+		}else if(isFn(x.then) ){
 			nextPromise.then = x.then;
-			if(isFn(x.then)){
-				var called = false;	// 保证只被调用一次
-				function  resolvePromise (y) { 	// 如果执行 `resolvePromise(y)`，则执行过程 `[[Resolve]](nextPromise， y)`；
-					if(called) return; called = true;
-					resolveX(nextPromise,y)
-				}
-				function rejectPromise (r) {	// 如果执行 `rejectPromise(r)`，则将 `r` 作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
-					if(called) return; called = true;
-					nextPromise.reject(r);
-				}
-				try{
-					// 如果 `x.then` 是函数 ，则将 `x` 作为上下文(`this`)执行这个函数，传入两个函数作为参数，第一个为 `resolvePromise`，第二个为 `rejectPromise
-					x.then.call(x, resolvePromise,rejectPromise);
-				}catch(e){
-					// 如果执行 `then` 时抛出异常 `e`，
-					//如果 `resolvePromise` 或者 `rejectPromise` 已经被调用则忽略异常， 
-					//如果未被调用则将e作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
-					if(!called) nextPromise.reject(e);
-				}
+			var called = false;	// 保证只被调用一次
+			function  resolvePromise (y) { 	// 如果执行 `resolvePromise(y)`，则执行过程 `[[Resolve]](nextPromise， y)`；
+				if(called) return; called = true;
+				resolveX(nextPromise,y)
+			}
+			function rejectPromise (r) {	// 如果执行 `rejectPromise(r)`，则将 `r` 作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
+				if(called) return; called = true;
+				nextPromise.reject(r);
+			}
+			try{
+				// 如果 `x.then` 是函数 ，则将 `x` 作为上下文(`this`)执行这个函数，传入两个函数作为参数，第一个为 `resolvePromise`，第二个为 `rejectPromise
+				x.then.call(x, resolvePromise,rejectPromise);
+			}catch(e){
+				// 如果执行 `then` 时抛出异常 `e`，
+				//如果 `resolvePromise` 或者 `rejectPromise` 已经被调用则忽略异常， 
+				//如果未被调用则将e作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
+				if(!called) nextPromise.reject(e);
 			}
 		}else{
 			// 这里我把两个条件合并到一起了

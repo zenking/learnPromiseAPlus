@@ -1,7 +1,12 @@
+/*
+ *  修复bug,通过2.2.2.6的测试，本来都快要放弃了，因为改动好点打，后来发现并不是
+ *  去除了多余注释
+ */
+
 ;(function (root, factory) {
-    if (typeof module !== 'undefined' && module.exports) {// CommonJS
+    if (typeof module !== 'undefined' && module.exports) {
         module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {// AMD / RequireJS
+    } else if (typeof define === 'function' && define.amd) {
         define(factory);
     } else {
         root.Promise = factory.call(root);

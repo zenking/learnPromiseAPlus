@@ -1,3 +1,8 @@
+/*
+ *  与promise_2相比，优化代码结构，
+ *
+ */
+
 ;(function (root, factory) {
     if (typeof module !== 'undefined' && module.exports) {// CommonJS
         module.exports = factory();
@@ -132,27 +137,26 @@
 				// 如果x是 `rejected`， `nextPromise` 将以相同的 `reason` 转化为 `rejected`
 				nextPromise.reject(x._reason);
 			}
-		}else if(typeof x == "object" ){
+		}else if(isFn(x.then)){
 			nextPromise.then = x.then;
-			if(isFn(x.then)){
-				var called = false;	// 保证只被调用一次
-				function  resolvePromise (y) { 	// 如果执行 `resolvePromise(y)`，则执行过程 `[[Resolve]](nextPromise， y)`；
-					if(called) return; called = true;
-					resolveX(nextPromise,y)
-				}
-				function rejectPromise (r) {	// 如果执行 `rejectPromise(r)`，则将 `r` 作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
-					if(called) return; called = true;
-					nextPromise.reject(r);
-				}
-				try{
-					// 如果 `x.then` 是函数 ，则将 `x` 作为上下文(`this`)执行这个函数，传入两个函数作为参数，第一个为 `resolvePromise`，第二个为 `rejectPromise
-					x.then.call(x, resolvePromise,rejectPromise);
-				}catch(e){
-					// 如果执行 `then` 时抛出异常 `e`，
-					//如果 `resolvePromise` 或者 `rejectPromise` 已经被调用则忽略异常， 
-					//如果未被调用则将e作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
-					if(!called) nextPromise.reject(e);
-				}
+			
+			var called = false;	// 保证只被调用一次
+			function  resolvePromise (y) { 	// 如果执行 `resolvePromise(y)`，则执行过程 `[[Resolve]](nextPromise， y)`；
+				if(called) return; called = true;
+				resolveX(nextPromise,y)
+			}
+			function rejectPromise (r) {	// 如果执行 `rejectPromise(r)`，则将 `r` 作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
+				if(called) return; called = true;
+				nextPromise.reject(r);
+			}
+			try{
+				// 如果 `x.then` 是函数 ，则将 `x` 作为上下文(`this`)执行这个函数，传入两个函数作为参数，第一个为 `resolvePromise`，第二个为 `rejectPromise
+				x.then.call(x, resolvePromise,rejectPromise);
+			}catch(e){
+				// 如果执行 `then` 时抛出异常 `e`，
+				//如果 `resolvePromise` 或者 `rejectPromise` 已经被调用则忽略异常， 
+				//如果未被调用则将e作为 `reason` 将 `nextPromise` 转化为 `Rejected`；
+				if(!called) nextPromise.reject(e);
 			}
 		}else{
 			// 这里我把两个条件合并到一起了
