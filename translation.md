@@ -85,13 +85,3 @@
 - 如果 `x` 不是对象，使用 `x` 作为 `value` 将 `nextPromise` 转化为 `Resolved`。_2.3.4_
 
 
-
-
-
-
-
-
-
-
-
-

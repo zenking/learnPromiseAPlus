@@ -4,17 +4,17 @@
  */
 
 ;(function (root, factory) {
-    if (typeof module !== 'undefined' && module.exports) {// CommonJS
-        module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {// AMD / RequireJS
-        define(factory);
-    } else {
-        root.Promise = factory.call(root);
-    }
+	if (typeof module !== 'undefined' && module.exports) {// CommonJS
+		module.exports = factory();
+	} else if (typeof define === 'function' && define.amd) {// AMD / RequireJS
+		define(factory);
+	} else {
+		root.Promise = factory.call(root);
+	}
 })(this, function () {
-    'use strict';
+	'use strict';
 
-    // 判断是否为函数的函数,因为频繁用到就直接写了过函数进行判断
+	// 判断是否为函数的函数,因为频繁用到就直接写了过函数进行判断
 	function isFn (fn) {
 		return typeof fn == "function";
 	}

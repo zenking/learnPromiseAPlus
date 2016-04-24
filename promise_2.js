@@ -4,17 +4,17 @@
  */
 
 ;(function (root, factory) {
-    if (typeof module !== 'undefined' && module.exports) {// CommonJS
-        module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {// AMD / RequireJS
-        define(factory);
-    } else {
-        root.Promise = factory.call(root);
-    }
+	if (typeof module !== 'undefined' && module.exports) {// CommonJS
+		module.exports = factory();
+	} else if (typeof define === 'function' && define.amd) {// AMD / RequireJS
+		define(factory);
+	} else {
+		root.Promise = factory.call(root);
+	}
 })(this, function () {
-    'use strict';
+	'use strict';
 
-    // 判断是否为函数的函数,因为频繁用到就直接写了过函数进行判断
+	// 判断是否为函数的函数,因为频繁用到就直接写了过函数进行判断
 	function isFn (fn) {
 		return typeof fn == "function";
 	}
@@ -52,26 +52,26 @@
 			if(isFn(onResolve)) {
 				setTimeout(function () {	//test 2.2.4  
 					try{
-			        	var x = onResolve(self._value);	// 直接调用onResolve,并获取返回值
-			        	resolveX(self._next,x);	// 如果有返回值，进行这个操作[[Resolve]](nextPromise,x)为了方便理解,将规范中的promsie2改成了nextPromsie
-		        	}catch(e){		// 如果抛出异常则以e作为reason,reject下一个promsie
+						var x = onResolve(self._value);	// 直接调用onResolve,并获取返回值
+						resolveX(self._next,x);	// 如果有返回值，进行这个操作[[Resolve]](nextPromise,x)为了方便理解,将规范中的promsie2改成了nextPromsie
+					}catch(e){		// 如果抛出异常则以e作为reason,reject下一个promsie
 						console.log(e)
 						self._next.reject(e);
 					}
 				},0);
-	        }else{		// 如果onResolve不为函数,并且promise状态为resolved，nextPromise将以相同的value被resolve
-	        	self._next.resolve(self._value);
-	        }
+			}else{		// 如果onResolve不为函数,并且promise状态为resolved，nextPromise将以相同的value被resolve
+				self._next.resolve(self._value);
+			}
 		}else if(!self._status){  // 同上一个 if
 			if(isFn(onReject)) {
 				setTimeout(function () { //test 2.2.4执行队列     
 					try{
 						var x = onReject(self._reason);
-		        		resolveX(self._next,x);
+						resolveX(self._next,x);
 					}catch(e){
 						self._next.reject(e)
 					}
-		        },0);
+				},0);
 			}else{
 				self._next.reject(self._reason);
 			}

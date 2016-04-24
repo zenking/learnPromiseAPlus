@@ -41,19 +41,19 @@ Promise.prototype.then = function (onResolve,onReject) {
 	}else if(this._status){    // 如果当前的Promise已经处于resolved状态,比如先进行resolve操作,再进行then操作
 		if(isFn(onResolve)) {
 			try{
-	        	var x = onResolve(this._value);	// 直接调用onResolve,并获取返回值
-	        	x && resolveX(this._next,x);	// 如果有返回值，进行这个操作[[Resolve]](nextPromise,x)为了方便理解,将规范中的promsie2改成了nextPromsie
-        	}catch(e){		// 如果抛出异常则以e作为reason,reject下一个promsie
+				var x = onResolve(this._value);	// 直接调用onResolve,并获取返回值
+				x && resolveX(this._next,x);	// 如果有返回值，进行这个操作[[Resolve]](nextPromise,x)为了方便理解,将规范中的promsie2改成了nextPromsie
+			}catch(e){		// 如果抛出异常则以e作为reason,reject下一个promsie
 				this._next.reject(e)
 			}
-        }else{		// 如果onResolve不为函数,并且promise状态为resolved，nextPromise将以相同的value被resolve
-        	this._next.resolve(this._value);
-        }
+		}else{		// 如果onResolve不为函数,并且promise状态为resolved，nextPromise将以相同的value被resolve
+			this._next.resolve(this._value);
+		}
 	}else if(!this._status){  // 同上一个 if
 		if(isFn(onReject)) {
 			try{
 				var x = onReject(this._reason);
-        		x && resolveX(this._next,x);
+				x && resolveX(this._next,x);
 			}catch(e){
 				this._next.reject(e)
 			}
