@@ -1,0 +1,30 @@
+{
+  "name": "promisesaplus",
+  "version": "0.0.1",
+  "description": "a specification of promises/a+",
+  "main":"lib/promise_6.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "jshint lib",
+    "test": "node test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesadabc/learnPromiseAPlus.git"
+  },
+  "keywords": [
+    "promises", 
+    "promises-aplus"
+  ],
+  "author": "xjp",
+  "bugs": {
+    "url": "https://github.com/thesadabc/learnPromiseAPlus/issues"
+  },
+  "homepage": "https://github.com/thesadabc/learnPromiseAPlus#readme",
+  "devDependencies": {
+    "jshint": "^2.9.2",
+    "promises-aplus-tests": "^2.1.1"
+  }
+}
