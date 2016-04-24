@@ -2,12 +2,10 @@ var path = require("path");
 var process = require("process");
 var promisesAplusTests = require("promises-aplus-tests");
 
-if(!process.argv[2]){
-    console.error("no promises file \nUsage: npm test promise_file");
-    process.exit(0);
-}
+var Promise = require(process.argv[2] ?
+                 path.join(process.cwd(), process.argv[2]) :
+                 path.join(__dirname, "..", "lib/promise_6.js"));
 
-var Promise = require(path.join(process.cwd(), process.argv[2]));
 
 if(!Promise){
     console.error("there is no Promise");

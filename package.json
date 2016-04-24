@@ -7,7 +7,6 @@
     "test": "test"
   },
   "scripts": {
-    "lint": "jshint lib",
     "test": "node test/index.js"
   },
   "repository": {
@@ -24,7 +23,6 @@
   },
   "homepage": "https://github.com/thesadabc/learnPromiseAPlus#readme",
   "devDependencies": {
-    "jshint": "^2.9.2",
     "promises-aplus-tests": "^2.1.1"
   }
 }
